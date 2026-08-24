@@ -117,7 +117,7 @@ def main():
     
     if token_stats:
         total_cost_usd = sum(s.avg_cost_usd * s.extraction_count for s in token_stats.values())
-        total_cost_ars = total_cost_usd * 1200
+        total_cost_ars = total_cost_usd * 1520  # Dólar oficial BNA venta (ago 2026)
         print(f"• Total cost analyzed: ${total_cost_usd:.4f} USD / ${total_cost_ars:.2f} ARS")
         
         # Most expensive schema

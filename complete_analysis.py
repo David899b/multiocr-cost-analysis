@@ -96,7 +96,7 @@ class CompleteAnalyzer:
     """Complete analysis correlating schema complexity with token consumption"""
 
     CHARS_PER_TOKEN = 3.5
-    EXCHANGE_RATE = 1200
+    EXCHANGE_RATE = 1520  # Dólar oficial BNA venta (ago 2026)
 
     FIELD_WEIGHTS = {
         "text": 1.0, "number": 1.0, "select": 1.5,

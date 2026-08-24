@@ -336,9 +336,9 @@ class SchemaAnalyzer:
                 "estimated_prompt_tokens": analysis.estimated_prompt_tokens,
                 "estimated_completion_tokens": estimated_completion,
                 "cost_per_extraction_usd": total_cost,
-                "cost_per_extraction_ars": total_cost * 1200,
+                "cost_per_extraction_ars": total_cost * 1520,  # Dólar oficial BNA venta (ago 2026)
                 "cost_per_1000_usd": total_cost * 1000,
-                "cost_per_1000_ars": total_cost * 1000 * 1200,
+                "cost_per_1000_ars": total_cost * 1000 * 1520,  # Dólar oficial BNA venta (ago 2026)
             })
 
         return sorted(estimations, key=lambda x: x["cost_per_extraction_usd"], reverse=True)

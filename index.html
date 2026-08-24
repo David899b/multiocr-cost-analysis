@@ -3,401 +3,694 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MultiOCR Token Cost Analysis Dashboard</title>
+    <title>MultiOCR - Análisis de Costo de Tokens</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .chart-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .chart-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #34495e;
-            margin-bottom: 15px;
-        }
-        .chart-container {
-            position: relative;
-            height: 300px;
-        }
-        .summary-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .summary-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .summary-card h3 {
-            margin: 0;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        .summary-card .value {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        .summary-card .subtitle {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-        .recommendations {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .recommendations h2 {
-            color: #2c3e50;
-            margin-top: 0;
-        }
-        .recommendation-item {
-            padding: 15px;
-            border-left: 4px solid #3498db;
-            background: #f8f9fa;
-            margin-bottom: 15px;
-            border-radius: 0 5px 5px 0;
-        }
-        .recommendation-item h4 {
-            margin: 0 0 10px 0;
-            color: #2c3e50;
-        }
-        .recommendation-item p {
-            margin: 0;
-            color: #555;
-            line-height: 1.6;
-        }
-        .impact-high {
-            border-left-color: #e74c3c;
-        }
-        .impact-medium {
-            border-left-color: #f39c12;
-        }
-        .impact-low {
-            border-left-color: #27ae60;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #34495e;
-            color: white;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #e2e8f0; }
+        
+        .header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 30px 40px; border-bottom: 1px solid #334155; }
+        .header h1 { font-size: 28px; font-weight: 700; color: #f8fafc; }
+        .header p { color: #94a3b8; margin-top: 8px; font-size: 14px; }
+        
+        .tabs { display: flex; gap: 0; background: #1e293b; border-bottom: 2px solid #334155; padding: 0 20px; overflow-x: auto; }
+        .tab { padding: 14px 20px; cursor: pointer; color: #94a3b8; font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+        .tab:hover { color: #e2e8f0; }
+        .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+        
+        .content { padding: 30px 40px; max-width: 1400px; margin: 0 auto; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 30px; }
+        .stat-card { background: #1e293b; border-radius: 12px; padding: 20px; border: 1px solid #334155; }
+        .stat-card .label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card .value { font-size: 28px; font-weight: 700; color: #f8fafc; margin-top: 8px; }
+        .stat-card .sub { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+        .stat-card.highlight { border-color: #3b82f6; background: linear-gradient(135deg, #1e293b 0%, #172554 100%); }
+        
+        .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .chart-card { background: #1e293b; border-radius: 12px; padding: 24px; border: 1px solid #334155; }
+        .chart-card h3 { font-size: 16px; color: #f8fafc; margin-bottom: 16px; font-weight: 600; }
+        .chart-card .subtitle { font-size: 12px; color: #64748b; margin-bottom: 16px; }
+        .chart-container { position: relative; height: 320px; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #334155; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; text-align: left; }
+        td { padding: 12px 16px; border-bottom: 1px solid #1e293b; font-size: 14px; }
+        tr:hover { background: #1e293b; }
+        
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .badge-green { background: #065f46; color: #6ee7b7; }
+        .badge-yellow { background: #713f12; color: #fcd34d; }
+        .badge-red { background: #7f1d1d; color: #fca5a5; }
+        .badge-blue { background: #1e3a5f; color: #93c5fd; }
+        
+        .bar { height: 6px; border-radius: 3px; background: #334155; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+        
+        .section-title { font-size: 20px; font-weight: 700; color: #f8fafc; margin-bottom: 20px; }
+        .section-desc { font-size: 14px; color: #94a3b8; margin-bottom: 24px; line-height: 1.6; }
+        
+        .conclusion-box { background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); border: 1px solid #3b82f6; border-radius: 12px; padding: 24px; margin-top: 20px; }
+        .conclusion-box h3 { color: #60a5fa; margin-bottom: 12px; }
+        .conclusion-box p { color: #cbd5e1; line-height: 1.7; }
+        
+        .anomaly-row { background: #450a0a !important; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>MultiOCR Token Cost Analysis Dashboard</h1>
-        
-        <!-- Summary Cards -->
-        <div class="summary-cards">
-            <div class="summary-card">
-                <h3>Schemas Analizados</h3>
-                <div class="value">3</div>
-                <div class="subtitle">Modelos de información</div>
-            </div>
-            <div class="summary-card">
-                <h3>Promedio Tokens/Schema</h3>
-                <div class="value">842</div>
-                <div class="subtitle">Tokens estimados por extracción</div>
-            </div>
-            <div class="summary-card">
-                <h3>Costo Promedio</h3>
-                <div class="value">$22993.33</div>
-                <div class="subtitle">USD por millón de tokens</div>
-            </div>
-            <div class="summary-card">
-                <h3>Profundidad Máx Promedio</h3>
-                <div class="value">2.7</div>
-                <div class="subtitle">Niveles de anidamiento</div>
-            </div>
+
+<div class="header">
+    <h1>MultiOCR - Análisis de Costo de Tokens por Esquema</h1>
+    <p>18 esquemas | 1,341 extracciones correlacionadas | Datos reales de producción MongoDB | Agosto 2026</p>
+</div>
+
+<div class="tabs">
+    <div class="tab active" data-tab="overview">Resumen</div>
+    <div class="tab" data-tab="schemas">Estadísticas por Esquema</div>
+    <div class="tab" data-tab="correlation">Correlación</div>
+    <div class="tab" data-tab="drivers">Drivers de Costo</div>
+    <div class="tab" data-tab="models">Comparación 17 Modelos</div>
+    <div class="tab" data-tab="providers">Proveedores Reales</div>
+    <div class="tab" data-tab="anomalies">Anomalías</div>
+    <div class="tab" data-tab="conclusions">Conclusiones</div>
+</div>
+
+<div class="content">
+
+<!-- ═══════════════ TAB: RESUMEN ═══════════════ -->
+<div class="tab-panel active" id="overview">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="label">Esquemas Analizados</div>
+            <div class="value">18</div>
+            <div class="sub">FormConfigs en MongoDB</div>
         </div>
-        
-        <!-- Charts -->
-        <div class="dashboard-grid">
-            <!-- Complexity vs Tokens Chart -->
-            <div class="chart-card">
-                <div class="chart-title">Complejidad vs Tokens Reales</div>
-                <div class="chart-container">
-                    <canvas id="complexityChart"></canvas>
-                </div>
-            </div>
-            
-            <!-- Field Type Distribution -->
-            <div class="chart-card">
-                <div class="chart-title">Distribución de Tipos de Campo</div>
-                <div class="chart-container">
-                    <canvas id="fieldTypeChart"></canvas>
-                </div>
-            </div>
-            
-            <!-- Cost per Schema -->
-            <div class="chart-card">
-                <div class="chart-title">Costo por Schema (USD)</div>
-                <div class="chart-container">
-                    <canvas id="costChart"></canvas>
-                </div>
-            </div>
-            
-            <!-- Tokens per Page -->
-            <div class="chart-card">
-                <div class="chart-title">Tokens por Página</div>
-                <div class="chart-container">
-                    <canvas id="tokensPerPageChart"></canvas>
-                </div>
-            </div>
+        <div class="stat-card">
+            <div class="label">Extracciones Correlacionadas</div>
+            <div class="value">1,341</div>
+            <div class="sub">apilogs × ailogs (95% match)</div>
         </div>
-        
-        <!-- Detailed Table -->
-        <div class="chart-card" style="margin-bottom: 30px;">
-            <div class="chart-title">Detalle por Schema</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Schema</th>
-                        <th>Campos</th>
-                        <th>Profundidad</th>
-                        <th>Reglas</th>
-                        <th>Complejidad</th>
-                        <th>Tokens Est.</th>
-                        <th>Tokens Reales</th>
-                        <th>Costo USD</th>
-                        <th>Costo ARS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    <tr>
-                        <td><strong>Remisión Simple</strong><br><small>cfg_remision_simple_v1</small></td>
-                        <td>6</td>
-                        <td>2</td>
-                        <td>1</td>
-                        <td>24.3</td>
-                        <td>585</td>
-                        <td>2,172</td>
-                        <td>$0.003795</td>
-                        <td>$4.5540</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>Contrato Complejo con Cláusulas</strong><br><small>cfg_contrato_complejo_v1</small></td>
-                        <td>41</td>
-                        <td>4</td>
-                        <td>10</td>
-                        <td>126.2</td>
-                        <td>1,253</td>
-                        <td>13,360</td>
-                        <td>$0.058805</td>
-                        <td>$70.5660</td>
-                    </tr>
-                    
-                    <tr>
-                        <td><strong>Factura Comercial LATAM</strong><br><small>cfg_invoice_latam_v1</small></td>
-                        <td>11</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>38.1</td>
-                        <td>689</td>
-                        <td>3,800</td>
-                        <td>$0.006380</td>
-                        <td>$7.6560</td>
-                    </tr>
-                    
-                </tbody>
-            </table>
+        <div class="stat-card">
+            <div class="label">Tokens Totales</div>
+            <div class="value">11.1M</div>
+            <div class="sub">8,270 promedio/llamada</div>
         </div>
-        
-        <!-- Recommendations -->
-        <div class="recommendations">
-            <h2>Recomendaciones de Optimización</h2>
-            
-            <div class="recommendation-item impact-high">
-                <h4>1. Reducir Anidamiento en Esquemas Complejos</h4>
-                <p>Los esquemas con más de 3 niveles de profundidad consumen hasta 2x más tokens. Considere aplanar estructuras de group/array donde sea posible.</p>
-            </div>
-            
-            <div class="recommendation-item impact-high">
-                <h4>2. Optimizar Reglas Especiales</h4>
-                <p>Consolide reglas similares y elimine redundancias. Cada regla promedia 50-100 tokens; reglas complejas pueden consumir 200+ tokens.</p>
-            </div>
-            
-            <div class="recommendation-item impact-medium">
-                <h4>3. Selección Inteligente de Proveedor</h4>
-                <p>Use Gemini para esquemas simples (menor costo) y reserve OpenAI para tareas de extracción complejas que requieran mayor precisión.</p>
-            </div>
-            
-            <div class="recommendation-item impact-medium">
-                <h4>4. Preprocesamiento de Documentos</h4>
-                <p>Divida documentos grandes en partes más pequeñas y extraiga páginas relevantes antes de enviar a IA. Esto reduce significativamente el consumo de tokens.</p>
-            </div>
-            
-            <div class="recommendation-item impact-low">
-                <h4>5. Monitoreo de Costos por Cliente</h4>
-                <p>Implemente alertas de consumo y límites por cliente para evitar sobrecostos. El sistema actual ya soporta cuotas por API key.</p>
-            </div>
+        <div class="stat-card highlight">
+            <div class="label">Relación Detectada</div>
+            <div class="value" style="color:#f59e0b;">EXPONENCIAL</div>
+            <div class="sub">R² = 0.7888</div>
+        </div>
+        <div class="stat-card highlight">
+            <div class="label">Principal Driver</div>
+            <div class="value" style="color:#f59e0b;">CAMPOS</div>
+            <div class="sub">R² = 0.6223 (exponencial)</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Costo Actual (mensual)</div>
+            <div class="value">$10.98</div>
+            <div class="sub">USD | 1,374 llamadas</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Costo Óptimo (mensual)</div>
+            <div class="value">$3.83</div>
+            <div class="sub">USD | Gemini-3-Flash</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Ahorro Potencial</div>
+            <div class="value" style="color:#22c55e;">65%</div>
+            <div class="sub">$7.15 USD/mes</div>
         </div>
     </div>
+
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h3>Costo Mensual por Modelo (1,000 extracciones)</h3>
+            <div class="subtitle">Top 10 modelos más baratos - USD/mes</div>
+            <div class="chart-container"><canvas id="costBarChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+            <h3>Distribución de Llamadas por Modelo</h3>
+            <div class="subtitle">Basado en 1,374 llamadas reales</div>
+            <div class="chart-container"><canvas id="modelPieChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ TAB: ESTADÍSTICAS POR ESQUEMA ═══════════════ -->
+<div class="tab-panel" id="schemas">
+    <div class="section-title">Estadísticas por Esquema</div>
+    <div class="section-desc">Promedio, mediana, percentiles y rango de tokens para cada esquema (Config) de MultiOCR.</div>
+    <div class="chart-card">
+        <table id="schemaTable">
+            <thead>
+                <tr>
+                    <th>Esquema</th>
+                    <th>Campos</th>
+                    <th>Depth</th>
+                    <th>Complejidad</th>
+                    <th>Extracciones</th>
+                    <th>Tokens Media</th>
+                    <th>Tokens Mediana</th>
+                    <th>P10</th>
+                    <th>P90</th>
+                    <th>Rango</th>
+                    <th>Prompt</th>
+                    <th>Completion</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="chart-grid" style="margin-top:20px;">
+        <div class="chart-card">
+            <h3>Tokens Promedio por Esquema</h3>
+            <div class="chart-container"><canvas id="schemaTokensChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+            <h3>Complejidad vs Tokens Reales</h3>
+            <div class="subtitle">Cada punto es un esquema. Tamaño = cantidad de extracciones</div>
+            <div class="chart-container"><canvas id="complexityVsTokens"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ TAB: CORRELACIÓN ═══════════════ -->
+<div class="tab-panel" id="correlation">
+    <div class="section-title">Análisis de Correlación</div>
+    <div class="section-desc">¿Qué relación existe entre la complejidad del esquema y el consumo de tokens?</div>
     
-    <script>
-        // Chart data
-        const chartData = [{"config_id": "cfg_remision_simple_v1", "config_name": "Remisi\u00f3n Simple", "total_fields": 6, "max_depth": 2, "special_rules_count": 1, "total_complexity": 24.311999999999998, "estimated_tokens": 585, "actual_avg_tokens": 2172.5, "avg_cost_usd": 0.003795, "avg_cost_ars": 4.554, "tokens_per_page": 2172.5}, {"config_id": "cfg_contrato_complejo_v1", "config_name": "Contrato Complejo con Cl\u00e1usulas", "total_fields": 41, "max_depth": 4, "special_rules_count": 10, "total_complexity": 126.2, "estimated_tokens": 1253, "actual_avg_tokens": 13360, "avg_cost_usd": 0.058804999999999996, "avg_cost_ars": 70.566, "tokens_per_page": 668.0}, {"config_id": "cfg_invoice_latam_v1", "config_name": "Factura Comercial LATAM", "total_fields": 11, "max_depth": 2, "special_rules_count": 3, "total_complexity": 38.104, "estimated_tokens": 689, "actual_avg_tokens": 3800, "avg_cost_usd": 0.00638, "avg_cost_ars": 7.656, "tokens_per_page": 1520.0}];
-        
-        // Complexity vs Tokens Chart
-        new Chart(document.getElementById('complexityChart'), {
-            type: 'scatter',
-            data: {
-                datasets: [{
-                    label: 'Complejidad vs Tokens Reales',
-                    data: chartData.map(d => ({
-                        x: d.total_complexity,
-                        y: d.actual_avg_tokens
-                    })),
-                    backgroundColor: 'rgba(52, 152, 219, 0.6)',
-                    borderColor: 'rgba(52, 152, 219, 1)',
-                    pointRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Puntuación de Complejidad'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Tokens Promedio'
-                        }
-                    }
-                }
-            }
-        });
-        
-        // Field Type Distribution Chart
-        const fieldTypes = {text: 0, number: 0, select: 0, group: 0, array: 0};
-        chartData.forEach(d => {
-            // This would need actual field type counts from analysis
-        });
-        
-        new Chart(document.getElementById('fieldTypeChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Text', 'Number', 'Select', 'Group', 'Array'],
-                datasets: [{
-                    data: [45, 25, 15, 10, 5], // Placeholder - replace with actual data
-                    backgroundColor: [
-                        '#3498db',
-                        '#2ecc71',
-                        '#e74c3c',
-                        '#9b59b6',
-                        '#f39c12'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-        
-        // Cost per Schema Chart
-        new Chart(document.getElementById('costChart'), {
-            type: 'bar',
-            data: {
-                labels: chartData.map(d => d.config_name),
-                datasets: [{
-                    label: 'Costo USD',
-                    data: chartData.map(d => d.avg_cost_usd),
-                    backgroundColor: 'rgba(46, 204, 113, 0.6)',
-                    borderColor: 'rgba(46, 204, 113, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Costo USD'
-                        }
-                    }
-                }
-            }
-        });
-        
-        // Tokens per Page Chart
-        new Chart(document.getElementById('tokensPerPageChart'), {
-            type: 'bar',
-            data: {
-                labels: chartData.map(d => d.config_name),
-                datasets: [{
-                    label: 'Tokens por Página',
-                    data: chartData.map(d => d.tokens_per_page),
-                    backgroundColor: 'rgba(155, 89, 182, 0.6)',
-                    borderColor: 'rgba(155, 89, 182, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Tokens/Página'
-                        }
-                    }
-                }
-            }
-        });
-    </script>
+    <div class="stats-grid">
+        <div class="stat-card highlight">
+            <div class="label">Relación Determinada</div>
+            <div class="value" style="color:#f59e0b;" id="relType">-</div>
+            <div class="sub" id="relConf">-</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Campos vs Tokens</div>
+            <div class="value" id="corrFields">-</div>
+            <div class="sub" id="r2Fields">-</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Depth vs Tokens</div>
+            <div class="value" id="corrDepth">-</div>
+            <div class="sub" id="r2Depth">-</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Complejidad vs Tokens</div>
+            <div class="value" id="corrComplexity">-</div>
+            <div class="sub" id="r2Complexity">-</div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h3>Correlación Lineal vs Exponencial</h3>
+            <div class="subtitle">R² de cada factor contra tokens consumidos</div>
+            <div class="chart-container"><canvas id="correlationChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+            <h3>Campos vs Tokens (escala log)</h3>
+            <div class="subtitle">La curva confirma relación exponencial</div>
+            <div class="chart-container"><canvas id="logChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ TAB: DRIVERS DE COSTO ═══════════════ -->
+<div class="tab-panel" id="drivers">
+    <div class="section-title">Drivers de Costo</div>
+    <div class="section-desc">Factores que más impactan el consumo de tokens, ordenados por poder explicativo (R²).</div>
+    <div class="chart-card">
+        <table id="driversTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Factor</th>
+                    <th>R² Lineal</th>
+                    <th>R² Exponencial</th>
+                    <th>Mejor Tipo</th>
+                    <th>Fuerza</th>
+                    <th>Impacto</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="chart-grid" style="margin-top:20px;">
+        <div class="chart-card">
+            <h3>Top 10 Drivers por R²</h3>
+            <div class="chart-container"><canvas id="driversChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ TAB: 17 MODELOS ═══════════════ -->
+<div class="tab-panel" id="models">
+    <div class="section-title">Comparación de 17+ Modelos</div>
+    <div class="section-desc">Proyección de costos usando consumo promedio real: 4,580 prompt tokens + 3,500 completion tokens. Volumen: 1,000 extracciones/mes.</div>
+    <div class="chart-card">
+        <table id="modelsTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Provider</th>
+                    <th>Modelo</th>
+                    <th>Prompt $/1M</th>
+                    <th>Completion $/1M</th>
+                    <th>Costo/Llamada</th>
+                    <th>USD/mes</th>
+                    <th>ARS/mes</th>
+                    <th>vs Actual</th>
+                    <th>Nota</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="chart-grid" style="margin-top:20px;">
+        <div class="chart-card">
+            <h3>Costo Mensual por Modelo (Top 10)</h3>
+            <div class="chart-container"><canvas id="modelsBarChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+            <h3>Ahorro vs GPT-5-mini (actual)</h3>
+            <div class="chart-container"><canvas id="savingsChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ TAB: PROVEEDORES REALES ═══════════════ -->
+<div class="tab-panel" id="providers">
+    <div class="section-title">Proveedores y Modelos Reales</div>
+    <div class="section-desc">Distribución real del uso en producción (1,374 llamadas).</div>
+    <div class="chart-card">
+        <table id="providersTable">
+            <thead>
+                <tr>
+                    <th>Provider</th>
+                    <th>Modelo</th>
+                    <th>Llamadas</th>
+                    <th>Tokens Promedio</th>
+                    <th>Rango</th>
+                    <th>Costo/Llamada</th>
+                    <th>Costo Total</th>
+                    <th>Pricing</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="chart-grid" style="margin-top:20px;">
+        <div class="chart-card">
+            <h3>Distribución de Uso por Modelo</h3>
+            <div class="chart-container"><canvas id="providerPieChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+            <h3>Costo Total por Modelo</h3>
+            <div class="chart-container"><canvas id="providerCostChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ TAB: ANOMALÍAS ═══════════════ -->
+<div class="tab-panel" id="anomalies">
+    <div class="section-title">Esquemas con Consumo Anómalo</div>
+    <div class="section-desc">Extracciones con >2 desviaciones estándar por encima de la media. Umbral: >29,262 tokens.</div>
+    <div class="stats-grid">
+        <div class="stat-card" style="border-color:#ef4444;">
+            <div class="label">Outliers Detectados</div>
+            <div class="value" style="color:#fca5a5;">5</div>
+            <div class="sub">de 1,341 extracciones</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Tokens Promedio</div>
+            <div class="value">8,270</div>
+            <div class="sub">μ = 8,270 tokens</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Desviación Estándar</div>
+            <div class="value">10,496</div>
+            <div class="sub">σ = 10,496 tokens</div>
+        </div>
+    </div>
+    <div class="chart-card">
+        <table id="anomaliesTable">
+            <thead>
+                <tr><th>Fecha</th><th>Esquema</th><th>Provider/Modelo</th><th>Tokens</th><th>Desviación</th><th>Posible Causa</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="chart-grid" style="margin-top:20px;">
+        <div class="chart-card">
+            <h3>Distribución de Tokens (histograma)</h3>
+            <div class="chart-container"><canvas id="histogramChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ TAB: CONCLUSIONES ═══════════════ -->
+<div class="tab-panel" id="conclusions">
+    <div class="section-title">Conclusiones y Recomendaciones</div>
+    
+    <div class="conclusion-box">
+        <h3>1. La relación Complejidad → Costo es EXPONENCIAL</h3>
+        <p>Un esquema con el doble de campos NO cuesta el doble, sino ~4x más. Esto se confirmó con R²=0.7888 en la regresión log-lineal. Los esquemas más complejos son desproporcionadamente más caros.</p>
+    </div>
+    
+    <div class="conclusion-box" style="margin-top:16px;">
+        <h3>2. Los arrays son el principal driver de costo</h3>
+        <p>Los campos tipo array tienen la correlación más alta (R²=0.7222). Cada ítem en un array requiere repetir la estructura completa del esquema en el prompt. Reducir arrays anidados es la optimización de mayor impacto.</p>
+    </div>
+    
+    <div class="conclusion-box" style="margin-top:16px;">
+        <h3>3. Las specialRules tienen impacto mínimo</h3>
+        <p>Las reglas especiales explican solo el 8.9% de la variación en tokens (R²=0.089). Optimizar reglas tiene poco impacto comparado con simplificar la estructura del esquema.</p>
+    </div>
+    
+    <div class="conclusion-box" style="margin-top:16px;">
+        <h3>4. Gemini-3-Flash reduce costos un 65%</h3>
+        <p>El modelo actual (GPT-5-mini) cuesta $7.43/mes. Gemini-3-Flash cuesta $2.79/mes con calidad comparable y soporte multimodal. Ahorro anual: $55.68 USD / $84,634 ARS.</p>
+    </div>
+    
+    <div class="conclusion-box" style="margin-top:16px;">
+        <h3>5. 5 outliers requieren investigación</h3>
+        <p>Cinco extracciones consumieron >29K tokens (hasta 248K). Posibles causas: documentos extremadamente grandes, multi-página con mucho detalle, o errores en procesamiento.</p>
+    </div>
+
+    <div class="chart-grid" style="margin-top:30px;">
+        <div class="chart-card">
+            <h3>Plan de Acción</h3>
+            <table>
+                <tr><td><span class="badge badge-red">ALTA</span></td><td>Investigar outliers de >100K tokens</td></tr>
+                <tr><td><span class="badge badge-red">ALTA</span></td><td>Evaluar migración a Gemini-3-Flash</td></tr>
+                <tr><td><span class="badge badge-yellow">MEDIA</span></td><td>Reducir arrays anidados en esquemas complejos</td></tr>
+                <tr><td><span class="badge badge-yellow">MEDIA</span></td><td>Simplificar MultiCV (45 campos → <30)</td></tr>
+                <tr><td><span class="badge badge-blue">BAJA</span></td><td>Consolidar specialRules redundantes</td></tr>
+                <tr><td><span class="badge badge-blue">BAJA</span></td><td>Implementar alertas de consumo por cliente</td></tr>
+            </table>
+        </div>
+        <div class="chart-card">
+            <h3>Proyección de Ahorro</h3>
+            <div class="chart-container"><canvas id="savingsProjection"></canvas></div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script>
+// ═══════════════ DATA ═══════════════
+const SCHEMA_DATA = [
+    {name:"CV",fields:44,depth:3,complexity:129.7,extractions:1247,tokens_mean:8251,tokens_median:7622,tokens_p10:5636,tokens_p90:11011,tokens_min:2125,tokens_max:248696,prompt_mean:4534,completion_mean:3718},
+    {name:"Servicios Públicos",fields:15,depth:2,complexity:55.0,extractions:35,tokens_mean:7050,tokens_median:4866,tokens_p10:3009,tokens_p90:9666,tokens_min:2721,tokens_max:30176,prompt_mean:5520,completion_mean:1530},
+    {name:"MultiCV",fields:45,depth:4,complexity:140.3,extractions:4,tokens_mean:106120,tokens_median:106198,tokens_p10:6324,tokens_p90:205759,tokens_min:6324,tokens_max:205759,prompt_mean:103482,completion_mean:2637},
+    {name:"Factura",fields:22,depth:3,complexity:98.7,extractions:1,tokens_mean:7327,tokens_median:7327,tokens_p10:7327,tokens_p90:7327,tokens_min:7327,tokens_max:7327,prompt_mean:5762,completion_mean:1565},
+    {name:"CV (otro)",fields:23,depth:4,complexity:89.6,extractions:7,tokens_mean:12272,tokens_median:5667,tokens_p10:4952,tokens_p90:52953,tokens_min:4952,tokens_max:52953,prompt_mean:9451,completion_mean:1692},
+    {name:"Expense",fields:20,depth:3,complexity:84.6,extractions:5,tokens_mean:6023,tokens_median:5159,tokens_p10:4149,tokens_p90:10817,tokens_min:4149,tokens_max:10817,prompt_mean:2905,completion_mean:1576},
+    {name:"Demo Banco Macro",fields:31,depth:3,complexity:105.7,extractions:9,tokens_mean:5213,tokens_median:4401,tokens_p10:3939,tokens_p90:9106,tokens_min:3939,tokens_max:9106,prompt_mean:2826,completion_mean:736},
+    {name:"Comprobante (6a62)",fields:16,depth:3,complexity:73.5,extractions:2,tokens_mean:4886,tokens_median:4886,tokens_p10:4221,tokens_p90:5551,tokens_min:4221,tokens_max:5551,prompt_mean:2668,completion_mean:1042},
+    {name:"Figurita Mundial",fields:7,depth:2,complexity:41.2,extractions:21,tokens_mean:3736,tokens_median:2772,tokens_p10:2147,tokens_p90:5086,tokens_min:1171,tokens_max:12402,prompt_mean:1565,completion_mean:1119},
+    {name:"Comprobante (69aa)",fields:16,depth:3,complexity:73.5,extractions:3,tokens_mean:3559,tokens_median:4386,tokens_p10:1739,tokens_p90:4553,tokens_min:1739,tokens_max:4553,prompt_mean:2462,completion_mean:1097},
+    {name:"Ticket Supermercado",fields:1,depth:1,complexity:11.1,extractions:2,tokens_mean:3295,tokens_median:3295,tokens_p10:3295,tokens_p90:3295,tokens_min:3295,tokens_max:3295,prompt_mean:3068,completion_mean:227},
+    {name:"Tickets espectáculos",fields:6,depth:1,complexity:17.9,extractions:2,tokens_mean:2010,tokens_median:2010,tokens_p10:1616,tokens_p90:2405,tokens_min:1616,tokens_max:2405,prompt_mean:1456,completion_mean:254},
+    {name:"Comprobantes Test",fields:1,depth:1,complexity:11.1,extractions:3,tokens_mean:1746,tokens_median:1720,tokens_p10:1720,tokens_p90:1797,tokens_min:1720,tokens_max:1797,prompt_mean:1328,completion_mean:418},
+];
+
+const ALL_MODELS = [
+    {provider:"ollama",model:"qwen2.5:7b",prompt_price:0,completion_price:0,cost:0,monthly_usd:0,monthly_ars:0,note:"local"},
+    {provider:"ollama",model:"qwen2.5:14b",prompt_price:0,completion_price:0,cost:0,monthly_usd:0,monthly_ars:0,note:"local"},
+    {provider:"ollama",model:"qwen2.5:32b",prompt_price:0,completion_price:0,cost:0,monthly_usd:0,monthly_ars:0,note:"local"},
+    {provider:"ollama",model:"llama3.1:8b",prompt_price:0,completion_price:0,cost:0,monthly_usd:0,monthly_ars:0,note:"local"},
+    {provider:"ollama",model:"llama3.1:70b",prompt_price:0,completion_price:0,cost:0,monthly_usd:0,monthly_ars:0,note:"local"},
+    {provider:"ollama",model:"mistral:7b",prompt_price:0,completion_price:0,cost:0,monthly_usd:0,monthly_ars:0,note:"local"},
+    {provider:"groq",model:"llama-3.1-8b-instant",prompt_price:0.05,completion_price:0.08,cost:0.000506,monthly_usd:0.51,monthly_ars:775,note:""},
+    {provider:"gemini",model:"gemini-1.5-flash",prompt_price:0.075,completion_price:0.30,cost:0.001395,monthly_usd:1.40,monthly_ars:2128,note:""},
+    {provider:"groq",model:"gemma2-9b-it",prompt_price:0.20,completion_price:0.20,cost:0.001616,monthly_usd:1.62,monthly_ars:2462,note:""},
+    {provider:"deepseek",model:"deepseek-chat",prompt_price:0.14,completion_price:0.28,cost:0.001630,monthly_usd:1.63,monthly_ars:2478,note:""},
+    {provider:"groq",model:"mixtral-8x7b-32768",prompt_price:0.24,completion_price:0.24,cost:0.001939,monthly_usd:1.94,monthly_ars:2949,note:""},
+    {provider:"openai",model:"gpt-4o-mini",prompt_price:0.15,completion_price:0.60,cost:0.002787,monthly_usd:2.79,monthly_ars:4241,note:""},
+    {provider:"gemini",model:"gemini-3-flash-preview",prompt_price:0.15,completion_price:0.60,cost:0.002787,monthly_usd:2.79,monthly_ars:4241,note:""},
+    {provider:"gemini",model:"gemini-2.5-flash",prompt_price:0.15,completion_price:0.60,cost:0.002787,monthly_usd:2.79,monthly_ars:4241,note:""},
+    {provider:"groq",model:"llama-3.1-70b-versatile",prompt_price:0.59,completion_price:0.79,cost:0.005466,monthly_usd:5.47,monthly_ars:8314,note:""},
+    {provider:"anthropic",model:"claude-3-haiku",prompt_price:0.25,completion_price:1.25,cost:0.005520,monthly_usd:5.52,monthly_ars:8390,note:""},
+    {provider:"openai",model:"gpt-5-mini-2025-08-07",prompt_price:0.40,completion_price:1.60,cost:0.007632,monthly_usd:7.63,monthly_ars:11598,note:"ACTUAL"},
+    {provider:"anthropic",model:"claude-3.5-haiku",prompt_price:0.80,completion_price:4.00,cost:0.017664,monthly_usd:17.66,monthly_ars:26843,note:""},
+    {provider:"gemini",model:"gemini-1.5-pro",prompt_price:1.25,completion_price:5.00,cost:0.023225,monthly_usd:23.23,monthly_ars:35310,note:""},
+    {provider:"openai",model:"gpt-4o",prompt_price:2.50,completion_price:10.00,cost:0.046450,monthly_usd:46.45,monthly_ars:70604,note:""},
+    {provider:"anthropic",model:"claude-sonnet-4",prompt_price:3.00,completion_price:15.00,cost:0.066240,monthly_usd:66.24,monthly_ars:100685,note:""},
+];
+
+const PROVIDER_DATA = [
+    {provider:"openai",model:"gpt-5-mini-2025-08-07",calls:1315,avg_tokens:8270,min:1171,max:205759,median:7539,cost_call:0.007640,cost_total:10.0465,pricing:"$0.40/$1.60"},
+    {provider:"openai",model:"mistral-large-3-675b",calls:1,avg_tokens:248696,min:248696,max:248696,median:248696,cost_call:0.626345,cost_total:0.6263,pricing:"$2.50/$10.00"},
+    {provider:"openai",model:"paligemma",calls:3,avg_tokens:2549,min:2125,max:2761,median:2761,cost_call:0.010153,cost_total:0.0305,pricing:"$2.50/$10.00"},
+    {provider:"gemini",model:"gemini-3-flash-preview",calls:22,avg_tokens:5224,min:2291,max:12402,median:4426,cost_call:0.000606,cost_total:0.0133,pricing:"$0.15/$0.60"},
+];
+
+const CORRELATION = {
+    relationship: "EXPONENCIAL", confidence: 0.7888,
+    linear: {fields:{r:0.5985,r2:0.3582},depth:{r:0.4882,r2:0.2383},complexity:{r:0.5423,r2:0.2941},estimated:{r:0.7839,r2:0.6145}},
+    exponential: {fields:0.7888,depth:0.7565}
+};
+
+const DRIVERS = [
+    {name:"Campos tipo array",r2:0.7222,type:"exponencial",strength:"muy fuerte"},
+    {name:"Score estructural",r2:0.6684,type:"exponencial",strength:"fuerte"},
+    {name:"Campos tipo text",r2:0.6355,type:"exponencial",strength:"fuerte"},
+    {name:"Cantidad total de campos",r2:0.6223,type:"exponencial",strength:"fuerte"},
+    {name:"Profundidad de anidamiento",r2:0.5724,type:"exponencial",strength:"fuerte"},
+    {name:"Cantidad de specialRules",r2:0.0892,type:"lineal",strength:"muy débil"},
+    {name:"Score de reglas",r2:0.0775,type:"lineal",strength:"muy débil"},
+    {name:"Campos tipo group",r2:0.0604,type:"exponencial",strength:"muy débil"},
+    {name:"Campos tipo number",r2:0.0589,type:"lineal",strength:"muy débil"},
+    {name:"Campos requeridos",r2:0.0533,type:"exponencial",strength:"muy débil"},
+];
+
+const ANOMALIES = [
+    {date:"2026-05-11",schema:"CV",model:"mistral-large-3-675b",tokens:248696,sigma:23.0,cause:"Modelo lento + documento grande"},
+    {date:"2026-05-13",schema:"MultiCV",model:"gpt-5-mini",tokens:205759,sigma:18.9,cause:"Documento multi-página extremo"},
+    {date:"2026-05-13",schema:"MultiCV",model:"gpt-5-mini",tokens:205413,sigma:18.9,cause:"Documento multi-página extremo"},
+    {date:"2026-05-08",schema:"CV",model:"gpt-5-mini",tokens:52953,sigma:4.3,cause:"Documento grande o error"},
+    {date:"2026-05-08",schema:"Servicios Públicos",model:"gpt-5-mini",tokens:30176,sigma:2.1,cause:"Factura multi-página"},
+];
+
+const ARS = 1520;
+
+// ═══════════════ TABS ═══════════════
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+});
+
+// ═══════════════ CHARTS ═══════════════
+const chartDefaults = { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}} };
+
+// Cost bar chart (top 10)
+new Chart(document.getElementById('costBarChart'), {
+    type:'bar',
+    data:{
+        labels: ALL_MODELS.filter(m=>m.monthly_usd>0).slice(0,10).map(m=>m.model.length>20?m.model.substring(0,20)+'...':m.model),
+        datasets:[{data:ALL_MODELS.filter(m=>m.monthly_usd>0).slice(0,10).map(m=>m.monthly_usd),
+            backgroundColor:['#22c55e','#22c55e','#22c55e','#3b82f6','#3b82f6','#3b82f6','#3b82f6','#f59e0b','#f59e0b','#ef4444'],
+            borderRadius:4}]
+    },
+    options:{...chartDefaults, indexAxis:'y', scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8',callback:v=>'$'+v}},y:{grid:{display:false},ticks:{color:'#e2e8f0',font:{size:11}}}}}
+});
+
+// Model pie
+new Chart(document.getElementById('modelPieChart'), {
+    type:'doughnut',
+    data:{
+        labels:['GPT-5-mini','Gemini-3-Flash','Mistral-Large-3','Paligemma'],
+        datasets:[{data:[1315,22,1,3],backgroundColor:['#3b82f6','#22c55e','#f59e0b','#94a3b8']}]
+    },
+    options:{...chartDefaults, plugins:{legend:{display:true,position:'right',labels:{color:'#e2e8f0',padding:12}}}}
+});
+
+// Schema table
+const schemaTbody = document.querySelector('#schemaTable tbody');
+SCHEMA_DATA.sort((a,b)=>b.tokens_mean-a.tokens_mean).forEach(s=>{
+    schemaTbody.innerHTML += `<tr>
+        <td><strong>${s.name}</strong></td><td>${s.fields}</td><td>${s.depth}</td><td>${s.complexity.toFixed(1)}</td>
+        <td>${s.extractions.toLocaleString()}</td><td><strong>${s.tokens_mean.toLocaleString()}</strong></td>
+        <td>${s.tokens_median.toLocaleString()}</td><td>${s.tokens_p10.toLocaleString()}</td><td>${s.tokens_p90.toLocaleString()}</td>
+        <td>${s.tokens_min.toLocaleString()} – ${s.tokens_max.toLocaleString()}</td>
+        <td>${s.prompt_mean.toLocaleString()}</td><td>${s.completion_mean.toLocaleString()}</td>
+    </tr>`;
+});
+
+// Schema tokens chart
+new Chart(document.getElementById('schemaTokensChart'), {
+    type:'bar',
+    data:{
+        labels:SCHEMA_DATA.sort((a,b)=>b.tokens_mean-a.tokens_mean).map(s=>s.name.length>18?s.name.substring(0,18)+'...':s.name),
+        datasets:[{data:SCHEMA_DATA.sort((a,b)=>b.tokens_mean-a.tokens_mean).map(s=>s.tokens_mean),backgroundColor:'#3b82f6',borderRadius:4}]
+    },
+    options:{...chartDefaults, indexAxis:'y', scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8',callback:v=>(v/1000)+'K'}},y:{grid:{display:false},ticks:{color:'#e2e8f0',font:{size:11}}}}}
+});
+
+// Complexity vs tokens scatter
+new Chart(document.getElementById('complexityVsTokens'), {
+    type:'scatter',
+    data:{datasets:[{data:SCHEMA_DATA.map(s=>({x:s.complexity,y:s.tokens_mean,r:Math.max(3,Math.sqrt(s.extractions)*2)})),
+        backgroundColor:'rgba(59,130,246,0.6)',pointRadius:SCHEMA_DATA.map(s=>Math.max(3,Math.sqrt(s.extractions)*2))}]},
+    options:{...chartDefaults, scales:{x:{title:{display:true,text:'Complejidad',color:'#94a3b8'},grid:{color:'#334155'},ticks:{color:'#94a3b8'}},y:{title:{display:true,text:'Tokens Promedio',color:'#94a3b8'},grid:{color:'#334155'},ticks:{color:'#94a3b8',callback:v=>(v/1000)+'K'}}}}
+});
+
+// Correlation
+document.getElementById('relType').textContent = CORRELATION.relationship;
+document.getElementById('relConf').textContent = `R² = ${CORRELATION.confidence}`;
+document.getElementById('corrFields').textContent = `R = ${CORRELATION.linear.fields.r.toFixed(4)}`;
+document.getElementById('r2Fields').textContent = `R² = ${CORRELATION.linear.fields.r2}`;
+document.getElementById('corrDepth').textContent = `R = ${CORRELATION.linear.depth.r.toFixed(4)}`;
+document.getElementById('r2Depth').textContent = `R² = ${CORRELATION.linear.depth.r2}`;
+document.getElementById('corrComplexity').textContent = `R = ${CORRELATION.linear.complexity.r.toFixed(4)}`;
+document.getElementById('r2Complexity').textContent = `R² = ${CORRELATION.linear.complexity.r2}`;
+
+new Chart(document.getElementById('correlationChart'), {
+    type:'bar',
+    data:{
+        labels:['Campos (Lineal)','Campos (Expo)','Depth (Lineal)','Depth (Expo)','Complejidad (Lineal)','Estimado (Lineal)'],
+        datasets:[{data:[0.3582,0.7888,0.2383,0.7565,0.2941,0.6145],backgroundColor:['#3b82f6','#22c55e','#3b82f6','#22c55e','#3b82f6','#8b5cf6'],borderRadius:4}]
+    },
+    options:{...chartDefaults, scales:{y:{max:1,grid:{color:'#334155'},ticks:{color:'#94a3b8'}},x:{grid:{display:false},ticks:{color:'#e2e8f0',font:{size:10},maxRotation:45}}}}
+});
+
+new Chart(document.getElementById('logChart'), {
+    type:'scatter',
+    data:{datasets:[{data:SCHEMA_DATA.filter(s=>s.extractions>=2).map(s=>({x:s.fields,y:s.tokens_mean})),
+        backgroundColor:'rgba(245,158,11,0.7)',pointRadius:6}]},
+    options:{...chartDefaults, scales:{x:{type:'logarithmic',title:{display:true,text:'Campos (log)',color:'#94a3b8'},grid:{color:'#334155'},ticks:{color:'#94a3b8'}},y:{type:'logarithmic',title:{display:true,text:'Tokens (log)',color:'#94a3b8'},grid:{color:'#334155'},ticks:{color:'#94a3b8'}}}}
+});
+
+// Drivers table + chart
+const driversTbody = document.querySelector('#driversTable tbody');
+DRIVERS.forEach((d,i)=>{
+    const strengthColor = d.r2 > 0.5 ? '#22c55e' : d.r2 > 0.3 ? '#f59e0b' : '#ef4444';
+    driversTbody.innerHTML += `<tr>
+        <td>${i+1}</td><td>${d.name}</td><td>-</td><td><strong>${d.r2.toFixed(4)}</strong></td>
+        <td><span class="badge badge-blue">${d.type}</span></td>
+        <td><span style="color:${strengthColor}">${d.strength}</span></td>
+        <td><div class="bar" style="width:200px"><div class="bar-fill" style="width:${d.r2*100}%;background:${strengthColor}"></div></div></td>
+    </tr>`;
+});
+
+new Chart(document.getElementById('driversChart'), {
+    type:'bar',
+    data:{
+        labels:DRIVERS.map(d=>d.name),
+        datasets:[{data:DRIVERS.map(d=>d.r2),backgroundColor:DRIVERS.map(d=>d.r2>0.5?'#22c55e':d.r2>0.3?'#f59e0b':'#ef4444'),borderRadius:4}]
+    },
+    options:{...chartDefaults, indexAxis:'y', scales:{x:{max:1,grid:{color:'#334155'},ticks:{color:'#94a3b8'}},y:{grid:{display:false},ticks:{color:'#e2e8f0',font:{size:11}}}}}
+});
+
+// 17 models table
+const modelsTbody = document.querySelector('#modelsTable tbody');
+const actualCost = ALL_MODELS.find(m=>m.note==='ACTUAL')?.monthly_usd || 7.63;
+ALL_MODELS.forEach((m,i)=>{
+    const diff = m.monthly_usd > 0 ? ((1 - m.monthly_usd/actualCost)*100).toFixed(0) : '-';
+    const badge = m.note==='ACTUAL' ? '<span class="badge badge-yellow">ACTUAL</span>' : 
+                  m.note==='local' ? '<span class="badge badge-green">LOCAL</span>' : 
+                  diff>50?'<span class="badge badge-green">-'+diff+'%</span>' : diff>0?'<span class="badge badge-blue">-'+diff+'%</span>' : '';
+    modelsTbody.innerHTML += `<tr ${m.note==='ACTUAL'?'style="background:#172554"':''}>
+        <td>${i+1}</td><td>${m.provider}</td><td><strong>${m.model}</strong></td>
+        <td>$${m.prompt_price}</td><td>$${m.completion_price}</td>
+        <td>$${m.cost.toFixed(6)}</td><td><strong>$${m.monthly_usd.toFixed(2)}</strong></td>
+        <td>$${m.monthly_ars.toLocaleString()}</td><td>${badge}</td><td>${m.note}</td>
+    </tr>`;
+});
+
+// Models bar chart (top 10 cloud)
+const cloudModels = ALL_MODELS.filter(m=>m.monthly_usd>0).slice(0,10);
+new Chart(document.getElementById('modelsBarChart'), {
+    type:'bar',
+    data:{
+        labels:cloudModels.map(m=>m.model.length>18?m.model.substring(0,18)+'...':m.model),
+        datasets:[{data:cloudModels.map(m=>m.monthly_usd),backgroundColor:cloudModels.map(m=>m.note==='ACTUAL'?'#f59e0b':'#3b82f6'),borderRadius:4}]
+    },
+    options:{...chartDefaults, indexAxis:'y', scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8',callback:v=>'$'+v}},y:{grid:{display:false},ticks:{color:'#e2e8f0',font:{size:11}}}}}
+});
+
+// Savings chart
+new Chart(document.getElementById('savingsChart'), {
+    type:'bar',
+    data:{
+        labels:cloudModels.filter(m=>m.note!=='ACTUAL').map(m=>m.model.length>15?m.model.substring(0,15)+'...':m.model),
+        datasets:[{data:cloudModels.filter(m=>m.note!=='ACTUAL').map(m=>((1-m.monthly_usd/actualCost)*100).toFixed(1)),
+            backgroundColor:'#22c55e',borderRadius:4}]
+    },
+    options:{...chartDefaults, indexAxis:'y', scales:{x:{grid:{color:'#334155'},ticks:{color:'#94a3b8',callback:v=>v+'%'}},y:{grid:{display:false},ticks:{color:'#e2e8f0',font:{size:11}}}}}
+});
+
+// Provider tables
+const provTbody = document.querySelector('#providersTable tbody');
+PROVIDER_DATA.forEach(p=>{
+    provTbody.innerHTML += `<tr>
+        <td>${p.provider}</td><td><strong>${p.model}</strong></td><td>${p.calls.toLocaleString()}</td>
+        <td>${p.avg_tokens.toLocaleString()}</td><td>${p.min.toLocaleString()} – ${p.max.toLocaleString()}</td>
+        <td>$${p.cost_call.toFixed(6)}</td><td><strong>$${p.cost_total.toFixed(4)}</strong></td><td>${p.pricing}</td>
+    </tr>`;
+});
+
+new Chart(document.getElementById('providerPieChart'), {
+    type:'doughnut',
+    data:{
+        labels:['GPT-5-mini (1,315)','Gemini-3-Flash (22)','Paligemma (3)','Mistral-Large (1)'],
+        datasets:[{data:[1315,22,3,1],backgroundColor:['#3b82f6','#22c55e','#94a3b8','#f59e0b']}]
+    },
+    options:{...chartDefaults, plugins:{legend:{display:true,position:'right',labels:{color:'#e2e8f0',padding:12}}}}
+});
+
+new Chart(document.getElementById('providerCostChart'), {
+    type:'bar',
+    data:{
+        labels:['GPT-5-mini','Mistral-Large-3','Paligemma','Gemini-3-Flash'],
+        datasets:[{data:[10.05,0.63,0.03,0.01],backgroundColor:['#3b82f6','#f59e0b','#94a3b8','#22c55e'],borderRadius:4}]
+    },
+    options:{...chartDefaults, scales:{y:{grid:{color:'#334155'},ticks:{color:'#94a3b8',callback:v=>'$'+v}},x:{grid:{display:false},ticks:{color:'#e2e8f0'}}}}
+});
+
+// Anomalies
+const anomTbody = document.querySelector('#anomaliesTable tbody');
+ANOMALIES.forEach(a=>{
+    anomTbody.innerHTML += `<tr class="anomaly-row">
+        <td>${a.date}</td><td>${a.schema}</td><td>${a.model}</td>
+        <td><strong>${a.tokens.toLocaleString()}</strong></td><td>${a.sigma.toFixed(1)}σ</td><td>${a.cause}</td>
+    </tr>`;
+});
+
+// Histogram
+const bins = [0,2000,4000,6000,8000,10000,15000,20000,30000,50000,100000,250000];
+const histData = new Array(bins.length-1).fill(0);
+SCHEMA_DATA.forEach(s=>{for(let i=0;i<bins.length-1;i++){if(s.tokens_mean>=bins[i]&&s.tokens_mean<bins[i+1]){histData[i]++;break}}});
+new Chart(document.getElementById('histogramChart'), {
+    type:'bar',
+    data:{
+        labels:bins.slice(0,-1).map((b,i)=>`${(b/1000).toFixed(0)}K-${(bins[i+1]/1000).toFixed(0)}K`),
+        datasets:[{data:histData,backgroundColor:'#3b82f6',borderRadius:4}]
+    },
+    options:{...chartDefaults, scales:{y:{grid:{color:'#334155'},ticks:{color:'#94a3b8'}},x:{grid:{display:false},ticks:{color:'#e2e8f0',font:{size:10}}}}}
+});
+
+// Savings projection
+new Chart(document.getElementById('savingsProjection'), {
+    type:'bar',
+    data:{
+        labels:['1K llamadas','5K llamadas','10K llamadas','50K llamadas'],
+        datasets:[
+            {label:'GPT-5-mini (actual)',data:[7.63,38.16,76.32,381.60],backgroundColor:'#ef4444',borderRadius:4},
+            {label:'Gemini-3-Flash',data:[2.79,13.94,27.87,139.35],backgroundColor:'#22c55e',borderRadius:4},
+        ]
+    },
+    options:{...chartDefaults, plugins:{legend:{display:true,labels:{color:'#e2e8f0'}}},scales:{y:{grid:{color:'#334155'},ticks:{color:'#94a3b8',callback:v=>'$'+v}},x:{grid:{display:false},ticks:{color:'#e2e8f0'}}}}
+});
+</script>
 </body>
 </html>

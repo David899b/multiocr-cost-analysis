@@ -46,7 +46,7 @@ class SchemaTokenStats:
 class TokenCostAnalyzer:
     """Analyzes token consumption from production ailogs"""
 
-    EXCHANGE_RATE = 1200  # 1 USD = 1200 ARS
+    EXCHANGE_RATE = 1520  # Dólar oficial BNA venta (ago 2026)
 
     # Provider pricing per 1M tokens (USD)
     PROVIDER_COSTS = {

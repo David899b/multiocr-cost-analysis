@@ -256,7 +256,7 @@ AHORRO: $7.15 USD/mes (65%)
 ### ROI de Optimización
 
 ```
-Ahorro anual: $85.80 USD / $102,960 ARS
+Ahorro anual: $85.80 USD / $130,416 ARS (a $1,520/USD oficial)
 Si escalamos a 10,000 llamadas/mes:
 - Actual: $79.80 USD/mes
 - Optimizado: $27.90 USD/mes
