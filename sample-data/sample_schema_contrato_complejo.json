@@ -1,0 +1,256 @@
+{
+  "configId": "cfg_contrato_complejo_v1",
+  "name": "Contrato Complejo con Cláusulas",
+  "description": "Modelo avanzado para contratos con múltiples secciones y cláusulas anidadas",
+  "provider": "OpenAI",
+  "aiModel": "gpt-4o",
+  "fields": [
+    {
+      "name": "contractNumber",
+      "label": "Número de Contrato",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "signingDate",
+      "label": "Fecha de Firma",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "parties",
+      "label": "Partes del Contrato",
+      "type": "array",
+      "fields": [
+        {
+          "name": "partyType",
+          "label": "Tipo de Parte",
+          "type": "select",
+          "options": ["Contratante", "Contratista", "Garante", "Aval"]
+        },
+        {
+          "name": "partyInfo",
+          "label": "Información de la Parte",
+          "type": "group",
+          "fields": [
+            {
+              "name": "name",
+              "label": "Nombre/Razón Social",
+              "type": "text",
+              "required": true
+            },
+            {
+              "name": "taxId",
+              "label": "CUIT/CUIL/RUT",
+              "type": "text",
+              "required": true
+            },
+            {
+              "name": "address",
+              "label": "Domicilio",
+              "type": "group",
+              "fields": [
+                {
+                  "name": "street",
+                  "label": "Calle",
+                  "type": "text"
+                },
+                {
+                  "name": "number",
+                  "label": "Número",
+                  "type": "number"
+                },
+                {
+                  "name": "city",
+                  "label": "Ciudad",
+                  "type": "text"
+                },
+                {
+                  "name": "province",
+                  "label": "Provincia/Estado",
+                  "type": "text"
+                },
+                {
+                  "name": "country",
+                  "label": "País",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "clauses",
+      "label": "Cláusulas del Contrato",
+      "type": "array",
+      "fields": [
+        {
+          "name": "clauseNumber",
+          "label": "Número de Cláusula",
+          "type": "text"
+        },
+        {
+          "name": "title",
+          "label": "Título",
+          "type": "text"
+        },
+        {
+          "name": "content",
+          "label": "Contenido",
+          "type": "text"
+        },
+        {
+          "name": "subclauses",
+          "label": "Subcláusulas",
+          "type": "array",
+          "fields": [
+            {
+              "name": "subclauseNumber",
+              "label": "Número",
+              "type": "text"
+            },
+            {
+              "name": "content",
+              "label": "Contenido",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "totalValue",
+      "label": "Valor Total del Contrato",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "label": "Moneda",
+      "type": "select",
+      "options": ["USD", "ARS", "EUR", "CLP", "MXN", "BRL", "COP"],
+      "required": true
+    },
+    {
+      "name": "duration",
+      "label": "Plazo del Contrato",
+      "type": "group",
+      "fields": [
+        {
+          "name": "startDate",
+          "label": "Fecha Inicio",
+          "type": "text"
+        },
+        {
+          "name": "endDate",
+          "label": "Fecha Fin",
+          "type": "text"
+        },
+        {
+          "name": "renewalType",
+          "label": "Tipo de Renovación",
+          "type": "select",
+          "options": ["Automática", "Manual", "Sin renovación"]
+        }
+      ]
+    },
+    {
+      "name": "paymentTerms",
+      "label": "Condiciones de Pago",
+      "type": "group",
+      "fields": [
+        {
+          "name": "paymentMethod",
+          "label": "Método de Pago",
+          "type": "select",
+          "options": ["Transferencia", "Cheque", "Efectivo", "Tarjeta"]
+        },
+        {
+          "name": "paymentSchedule",
+          "label": "Calendario de Pagos",
+          "type": "array",
+          "fields": [
+            {
+              "name": "installmentNumber",
+              "label": "Cuota N°",
+              "type": "number"
+            },
+            {
+              "name": "amount",
+              "label": "Monto",
+              "type": "number"
+            },
+            {
+              "name": "dueDate",
+              "label": "Fecha de Vencimiento",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "name": "latePaymentPenalty",
+          "label": "Mora por Atraso",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "terminationClauses",
+      "label": "Cláusulas de Resolución",
+      "type": "array",
+      "fields": [
+        {
+          "name": "condition",
+          "label": "Condición",
+          "type": "text"
+        },
+        {
+          "name": "noticePeriod",
+          "label": "Plazo de Aviso",
+          "type": "text"
+        },
+        {
+          "name": "penalty",
+          "label": "Penalidad",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "signatures",
+      "label": "Firmas",
+      "type": "array",
+      "fields": [
+        {
+          "name": "signatoryName",
+          "label": "Nombre del Firmante",
+          "type": "text"
+        },
+        {
+          "name": "signatoryRole",
+          "label": "Cargo",
+          "type": "text"
+        },
+        {
+          "name": "signatureDate",
+          "label": "Fecha de Firma",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "specialRules": [
+    "Extraer todas las fechas en formato YYYY-MM-DD.",
+    "Los montos deben incluir el símbolo de moneda cuando esté disponible.",
+    "Para las cláusulas, extraer el número y título completos.",
+    "Las subcláusulas deben anidarse bajo su cláusula padre.",
+    "Si hay múltiples partes, todas deben ser extraídas en el array parties.",
+    "Los plazos de aviso deben expresarse en días.",
+    "Las penalidades por mora deben expresarse como porcentaje mensual.",
+    "Si el contrato tiene anexos, incluirlos como cláusulas adicionales.",
+    "Validar que las fechas de inicio sean anteriores a las de fin.",
+    "Los montos de cuotas deben sumar el valor total del contrato."
+  ]
+}

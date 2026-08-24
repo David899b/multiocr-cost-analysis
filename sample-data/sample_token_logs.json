@@ -1,0 +1,152 @@
+[
+  {
+    "logId": "log_20260823_00192837",
+    "timestamp": "2026-08-23T15:08:00Z",
+    "configId": "cfg_invoice_latam_v1",
+    "clientKey": "client_app_sales_latam",
+    "provider": "Gemini",
+    "aiModel": "gemini-1.5-pro",
+    "document": {
+      "fileName": "factura_proveedor_102.pdf",
+      "mimeType": "application/pdf",
+      "sizeBytes": 1048576,
+      "pageCount": 2
+    },
+    "tokenUsage": {
+      "promptTokens": 3250,
+      "completionTokens": 420,
+      "totalTokens": 3670
+    },
+    "costEstimation": {
+      "promptCostUSD": 0.00406,
+      "completionCostUSD": 0.00210,
+      "totalCostUSD": 0.00616
+    },
+    "status": "SUCCESS"
+  },
+  {
+    "logId": "log_20260823_00192838",
+    "timestamp": "2026-08-23T15:09:15Z",
+    "configId": "cfg_remision_simple_v1",
+    "clientKey": "client_app_logistics",
+    "provider": "Gemini",
+    "aiModel": "gemini-1.5-pro",
+    "document": {
+      "fileName": "remision_456.pdf",
+      "mimeType": "application/pdf",
+      "sizeBytes": 524288,
+      "pageCount": 1
+    },
+    "tokenUsage": {
+      "promptTokens": 1850,
+      "completionTokens": 280,
+      "totalTokens": 2130
+    },
+    "costEstimation": {
+      "promptCostUSD": 0.00231,
+      "completionCostUSD": 0.00140,
+      "totalCostUSD": 0.00371
+    },
+    "status": "SUCCESS"
+  },
+  {
+    "logId": "log_20260823_00192839",
+    "timestamp": "2026-08-23T15:10:30Z",
+    "configId": "cfg_contrato_complejo_v1",
+    "clientKey": "client_app_legal",
+    "provider": "OpenAI",
+    "aiModel": "gpt-4o",
+    "document": {
+      "fileName": "contrato_servicios_789.pdf",
+      "mimeType": "application/pdf",
+      "sizeBytes": 2097152,
+      "pageCount": 15
+    },
+    "tokenUsage": {
+      "promptTokens": 8920,
+      "completionTokens": 2150,
+      "totalTokens": 11070
+    },
+    "costEstimation": {
+      "promptCostUSD": 0.02676,
+      "completionCostUSD": 0.02150,
+      "totalCostUSD": 0.04826
+    },
+    "status": "SUCCESS"
+  },
+  {
+    "logId": "log_20260823_00192840",
+    "timestamp": "2026-08-23T15:11:45Z",
+    "configId": "cfg_invoice_latam_v1",
+    "clientKey": "client_app_sales_latam",
+    "provider": "Gemini",
+    "aiModel": "gemini-1.5-pro",
+    "document": {
+      "fileName": "factura_export_201.pdf",
+      "mimeType": "application/pdf",
+      "sizeBytes": 1572864,
+      "pageCount": 3
+    },
+    "tokenUsage": {
+      "promptTokens": 3480,
+      "completionTokens": 450,
+      "totalTokens": 3930
+    },
+    "costEstimation": {
+      "promptCostUSD": 0.00435,
+      "completionCostUSD": 0.00225,
+      "totalCostUSD": 0.00660
+    },
+    "status": "SUCCESS"
+  },
+  {
+    "logId": "log_20260823_00192841",
+    "timestamp": "2026-08-23T15:12:00Z",
+    "configId": "cfg_remision_simple_v1",
+    "clientKey": "client_app_logistics",
+    "provider": "Gemini",
+    "aiModel": "gemini-1.5-pro",
+    "document": {
+      "fileName": "remision_urgente_789.pdf",
+      "mimeType": "application/pdf",
+      "sizeBytes": 655360,
+      "pageCount": 1
+    },
+    "tokenUsage": {
+      "promptTokens": 1920,
+      "completionTokens": 295,
+      "totalTokens": 2215
+    },
+    "costEstimation": {
+      "promptCostUSD": 0.00240,
+      "completionCostUSD": 0.00148,
+      "totalCostUSD": 0.00388
+    },
+    "status": "SUCCESS"
+  },
+  {
+    "logId": "log_20260823_00192842",
+    "timestamp": "2026-08-23T15:13:15Z",
+    "configId": "cfg_contrato_complejo_v1",
+    "clientKey": "client_app_legal",
+    "provider": "OpenAI",
+    "aiModel": "gpt-4o",
+    "document": {
+      "fileName": "contrato_largo_456.pdf",
+      "mimeType": "application/pdf",
+      "sizeBytes": 3145728,
+      "pageCount": 25
+    },
+    "tokenUsage": {
+      "promptTokens": 12450,
+      "completionTokens": 3200,
+      "totalTokens": 15650
+    },
+    "costEstimation": {
+      "promptCostUSD": 0.03735,
+      "completionCostUSD": 0.03200,
+      "totalCostUSD": 0.06935
+    },
+    "status": "SUCCESS"
+  }
+]

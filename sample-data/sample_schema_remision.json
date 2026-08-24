@@ -1,0 +1,47 @@
+{
+  "configId": "cfg_remision_simple_v1",
+  "name": "Remisión Simple",
+  "description": "Modelo básico para remitos de entrega",
+  "provider": "Gemini",
+  "aiModel": "gemini-1.5-pro",
+  "fields": [
+    {
+      "name": "remisionNumber",
+      "label": "Número de Remisión",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "deliveryDate",
+      "label": "Fecha de Entrega",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "recipient",
+      "label": "Destinatario",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "items",
+      "label": "Ítems Entregados",
+      "type": "array",
+      "fields": [
+        {
+          "name": "description",
+          "label": "Descripción",
+          "type": "text"
+        },
+        {
+          "name": "quantity",
+          "label": "Cantidad",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "specialRules": [
+    "Formato de fecha: DD/MM/YYYY"
+  ]
+}

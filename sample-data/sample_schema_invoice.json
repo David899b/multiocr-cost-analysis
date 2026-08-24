@@ -1,0 +1,80 @@
+{
+  "configId": "cfg_invoice_latam_v1",
+  "name": "Factura Comercial LATAM",
+  "description": "Modelo de extracción para facturas comerciales estándar en LATAM",
+  "provider": "Gemini",
+  "aiModel": "gemini-1.5-pro",
+  "fields": [
+    {
+      "name": "invoiceNumber",
+      "label": "Número de Factura",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "issueDate",
+      "label": "Fecha de Emisión",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "totalAmount",
+      "label": "Monto Total",
+      "type": "number",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "label": "Moneda",
+      "type": "select",
+      "options": ["USD", "ARS", "CLP", "MXN", "BRL"],
+      "required": true
+    },
+    {
+      "name": "vendor",
+      "label": "Datos del Proveedor",
+      "type": "group",
+      "fields": [
+        {
+          "name": "vendorName",
+          "label": "Nombre/Razón Social",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "taxId",
+          "label": "Identificación Fiscal (CUIT/RUT/RFC)",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "items",
+      "label": "Líneas de Detalle",
+      "type": "array",
+      "fields": [
+        {
+          "name": "description",
+          "label": "Descripción del Ítem",
+          "type": "text"
+        },
+        {
+          "name": "quantity",
+          "label": "Cantidad",
+          "type": "number"
+        },
+        {
+          "name": "unitPrice",
+          "label": "Precio Unitario",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "specialRules": [
+    "Extraer la fecha en formato YYYY-MM-DD.",
+    "Si el CUIT/RUT incluye guiones, conservarlos.",
+    "Si la moneda no está explícita, inferirla según el país del emisor."
+  ]
+}

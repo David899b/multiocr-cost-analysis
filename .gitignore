@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.env
+
+# Production data (contains real data from MongoDB)
+production_data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Reports (generated)
+reports/*.json
+reports/*.txt
+reports/*.html
+
+# Keep sample data and source code
+!sample-data/
+!reports/FINAL_REPORT.md
+!reports/README.md
