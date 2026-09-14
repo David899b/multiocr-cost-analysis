@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.11" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Aviso de Privacidad y Tratamiento por IA</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+  @page { size: A4; margin: 22mm 18mm 20mm 18mm; }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.5;
+    color: #1a1a1a;
+    max-width: 100%;
+  }
+  h1 {
+    font-size: 19pt;
+    color: #0b3d5c;
+    border-bottom: 3px solid #0b3d5c;
+    padding-bottom: 6px;
+    margin-top: 0;
+  }
+  h2 {
+    font-size: 13pt;
+    color: #0b3d5c;
+    border-bottom: 1px solid #c9d8e2;
+    padding-bottom: 3px;
+    margin-top: 22px;
+  }
+  h3 { font-size: 11.5pt; color: #14506f; margin-top: 16px; }
+  strong { color: #0b3d5c; }
+  blockquote {
+    background: #f2f6f9;
+    border-left: 4px solid #0b3d5c;
+    margin: 0 0 14px 0;
+    padding: 8px 14px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 9pt;
+    margin: 10px 0 16px 0;
+  }
+  th, td {
+    border: 1px solid #b9c8d3;
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: #0b3d5c; color: white; font-weight: 600; }
+  tr:nth-child(even) td { background: #f4f7fa; }
+  ul, ol { padding-left: 20px; }
+  li { margin-bottom: 3px; }
+  hr { border: none; border-top: 2px solid #0b3d5c; margin: 24px 0 12px 0; }
+  code { background: #eef1f4; padding: 1px 4px; border-radius: 3px; font-size: 9pt; }
+  #TOC {
+    background: #f2f6f9;
+    border: 1px solid #c9d8e2;
+    padding: 12px 20px;
+    margin-bottom: 24px;
+  }
+  #TOC ul { list-style: none; padding-left: 0; }
+  #TOC li { margin: 2px 0; }
+  #TOC a { color: #0b3d5c; text-decoration: none; }
+  .footer {
+    margin-top: 34px;
+    padding-top: 8px;
+    border-top: 2px solid #0b3d5c;
+    font-size: 8.5pt;
+    color: #55666f;
+  }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Aviso de Privacidad y Tratamiento por IA</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a
+href="#aviso-de-privacidad-y-tratamiento-por-inteligencia-artificial-multi-ocr-tool"
+id="toc-aviso-de-privacidad-y-tratamiento-por-inteligencia-artificial-multi-ocr-tool">Aviso
+de Privacidad y Tratamiento por Inteligencia Artificial — Multi OCR
+Tool</a>
+<ul>
+<li><a href="#objeto-y-alcance" id="toc-objeto-y-alcance">1. Objeto y
+alcance</a></li>
+<li><a href="#definiciones" id="toc-definiciones">2.
+Definiciones</a></li>
+<li><a href="#qué-hace-la-plataforma-con-el-documento"
+id="toc-qué-hace-la-plataforma-con-el-documento">3. Qué hace la
+plataforma con el documento</a></li>
+<li><a href="#naturaleza-de-los-datos-contenidos-en-los-documentos"
+id="toc-naturaleza-de-los-datos-contenidos-en-los-documentos">4.
+Naturaleza de los datos contenidos en los documentos</a></li>
+<li><a
+href="#manera-en-que-el-proveedor-trata-los-datos-retención-y-entrenamiento"
+id="toc-manera-en-que-el-proveedor-trata-los-datos-retención-y-entrenamiento">5.
+Manera en que el proveedor trata los datos (retención y
+entrenamiento)</a></li>
+<li><a href="#transferencia-internacional-de-datos"
+id="toc-transferencia-internacional-de-datos">6. Transferencia
+internacional de datos</a></li>
+<li><a href="#base-legal-y-consentimiento"
+id="toc-base-legal-y-consentimiento">7. Base legal y
+consentimiento</a></li>
+<li><a href="#datos-sensibles-reglas-de-uso"
+id="toc-datos-sensibles-reglas-de-uso">8. Datos sensibles: reglas de
+uso</a></li>
+<li><a href="#medidas-de-seguridad-y-minimización"
+id="toc-medidas-de-seguridad-y-minimización">9. Medidas de seguridad y
+minimización</a></li>
+<li><a href="#derechos-del-titular-de-los-datos-arco"
+id="toc-derechos-del-titular-de-los-datos-arco">10. Derechos del titular
+de los datos (ARCO)</a></li>
+<li><a href="#exactitud-de-los-resultados"
+id="toc-exactitud-de-los-resultados">11. Exactitud de los
+resultados</a></li>
+<li><a href="#vigencia-y-cambios" id="toc-vigencia-y-cambios">12.
+Vigencia y cambios</a></li>
+<li><a href="#contacto-y-responsable"
+id="toc-contacto-y-responsable">13. Contacto y responsable</a>
+<ul>
+<li><a
+href="#bloqueadores-para-cierre-del-documento-dependencia-responsable"
+id="toc-bloqueadores-para-cierre-del-documento-dependencia-responsable">Bloqueadores
+para cierre del documento (dependencia · responsable)</a></li>
+<li><a href="#referencias-de-precedentes-usados-como-modelo"
+id="toc-referencias-de-precedentes-usados-como-modelo">Referencias de
+precedentes usados como modelo</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1
+id="aviso-de-privacidad-y-tratamiento-por-inteligencia-artificial-multi-ocr-tool">Aviso
+de Privacidad y Tratamiento por Inteligencia Artificial — Multi OCR
+Tool</h1>
+<p><strong>Versión:</strong> 0.1 (borrador para revisión legal)
+<strong>Fecha:</strong> 14/09/2026 <strong>Estado:</strong> [ ]
+Pendiente validación legal (Joaquín — ticket ARG-597) · [ ] Pendiente
+aprobación de producto</p>
+<hr />
+<h2 id="objeto-y-alcance">1. Objeto y alcance</h2>
+<p>Este Aviso explica, de forma clara y previa a la carga de cualquier
+documento, cómo <strong>Multi OCR Tool</strong> trata los documentos
+(facturas, remisiones, contratos y archivos afines) que los usuarios
+suben <strong>para extracción de datos con modelos de inteligencia
+artificial (IA)</strong>.</p>
+<p>Aplica a todas las cuentas y modalidades de procesamiento: modelos en
+la nube (API de terceros) y modelos locales (on-premise). Se actualizará
+cuando cambie el proveedor, la política de retención de un proveedor o
+la arquitectura del servicio.</p>
+<h2 id="definiciones">2. Definiciones</h2>
+<ul>
+<li><strong>Documento:</strong> factura, remisión, contrato o
+comprobante subido por el usuario para extracción de datos.</li>
+<li><strong>Datos personales:</strong> información referida a personas
+físicas o de existencia ideal determinadas o determinables (art. 2º, Ley
+25.326).</li>
+<li><strong>Datos personales sensibles:</strong> datos que revelan
+origen racial o étnico, opiniones políticas, convicciones religiosas,
+filosóficas o morales, afiliación sindical, información de salud o de
+vida sexual (art. 2º, Ley 25.326).</li>
+<li><strong>Proveedor LLM:</strong> tercero que ejecuta el modelo de IA
+(OpenAI, Google, Mistral u otro) en la nube o localmente.</li>
+<li><strong>Procesamiento:</strong> envío del documento al modelo de IA
+y recepción del resultado de extracción.</li>
+</ul>
+<h2 id="qué-hace-la-plataforma-con-el-documento">3. Qué hace la
+plataforma con el documento</h2>
+<p>Para prestar el servicio, el contenido del documento <strong>se envía
+al proveedor LLM</strong> configurado según la cuenta, y el resultado de
+extracción es devuelto al usuario. El procesamiento se realiza
+<strong>únicamente</strong> para cumplir la finalidad declarada de
+extracción de datos del documento.</p>
+<h2 id="naturaleza-de-los-datos-contenidos-en-los-documentos">4.
+Naturaleza de los datos contenidos en los documentos</h2>
+<p>Conforme a la Ley 25.326 y los criterios de la AAIP, los documentos
+típicamente procesados (facturas, remisiones, contratos) contienen
+<strong>datos personales de carácter intermedio</strong>
+(identificación, CUIT, domicilio, datos patrimoniales). <strong>No son,
+por regla general, datos sensibles</strong> en los términos del art. 2º.
+Si un documento contuviera datos que revelen salud, religión, ideología,
+afiliación sindical u origen racial, regirá lo dispuesto en el art. 7º
+de la Ley 25.326 y <strong>el usuario no deberá cargarlo</strong> salvo
+que cuente con el consentimiento explícito del titular o base legal
+válida.</p>
+<h2
+id="manera-en-que-el-proveedor-trata-los-datos-retención-y-entrenamiento">5.
+Manera en que el proveedor trata los datos (retención y
+entrenamiento)</h2>
+<p>El tratamiento que realiza cada proveedor depende del <strong>tipo de
+cuenta</strong> y de las condiciones contractuales del proveedor, no de
+esta plataforma. Resumen vigente a la fecha de este Aviso:</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Escenario</th>
+<th>¿El proveedor entrena con los documentos?</th>
+<th>Retención por defecto</th>
+<th>Mitigación disponible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenAI API</strong></td>
+<td>No (toda la API, desde 2023)</td>
+<td>Logs de abuso hasta 30 días</td>
+<td>ZDR (Enterprise, aprobación previa)</td>
+</tr>
+<tr>
+<td><strong>Google Gemini API</strong></td>
+<td>No si hay cuenta pagada (billing activo)</td>
+<td>Logs limitados (detección de abuso)</td>
+<td>Vertex AI (región, VPC-SC, no entrenamiento)</td>
+</tr>
+<tr>
+<td><strong>Mistral API</strong></td>
+<td>No por defecto</td>
+<td>Según DPA (30 días post-terminación)</td>
+<td>ZDR en planes pagos</td>
+</tr>
+<tr>
+<td><strong>Modelo local (on-premise)</strong></td>
+<td>No</td>
+<td>Sin envío a terceros</td>
+<td>Aislamiento de red; cifrado local</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Fuente: políticas y términos vigentes de OpenAI, Google y Mistral a
+la fecha. Se actualizan sin cambios contractuales que requieran
+aviso.</p>
+</blockquote>
+<h2 id="transferencia-internacional-de-datos">6. Transferencia
+internacional de datos</h2>
+<p>Cuando el procesamiento utiliza un proveedor en la nube, los datos
+pueden salir de la República Argentina y transferirse a un tercer país
+(art. 12, Ley 25.326). La plataforma: - informa previamente esta
+transferencia en este Aviso; - exige a sus proveedores condiciones de
+protección mediante acuerdos de procesamiento de datos (DPA) y, cuando
+corresponda, cláusulas contractuales modelo aprobadas por la AAIP (Disp.
+60-E/2016 y Res. AAIP 198/2023); - cuando el modelo corre en forma
+local, <strong>no se produce transferencia internacional</strong> porque
+el documento no abandona el entorno del usuario.</p>
+<h2 id="base-legal-y-consentimiento">7. Base legal y consentimiento</h2>
+<p>El tratamiento de los datos contenidos en los documentos se apoya en:
+- el <strong>consentimiento libre, expreso e informado</strong> del
+usuario al cargar el documento en la plataforma (art. 5º, Ley 25.326),
+prestado mediante la aceptación de este Aviso; y/o - las excepciones
+legales aplicables (art. 5º incs. c y d, Ley 25.326) cuando los datos
+derivan de una relación contractual.</p>
+<p><strong>Responsabilidad del usuario:</strong> al subir un documento,
+el usuario declara contar con base legal o consentimiento para procesar
+los datos personales contenidos, <strong>incluidos los de
+terceros</strong> (clientes, proveedores, firmantes). La plataforma no
+verifica el contenido de cada documento ni asume la responsabilidad del
+usuario por datos de terceros cargados sin la base legal
+correspondiente.</p>
+<h2 id="datos-sensibles-reglas-de-uso">8. Datos sensibles: reglas de
+uso</h2>
+<ul>
+<li><strong>Regla general:</strong> no cargue documentos que contengan
+datos personales sensibles (art. 2º, Ley 25.326).</li>
+<li><strong>Excepción:</strong> si el caso lo exige, solo con el
+consentimiento explícito, previo y documentado del titular, y
+restringido a la finalidad declarada.</li>
+<li>La plataforma puede <strong>bloquear la carga</strong> o
+<strong>advertir</strong> en función de la configuración de cuenta y de
+los controles de seguridad activados.</li>
+</ul>
+<h2 id="medidas-de-seguridad-y-minimización">9. Medidas de seguridad y
+minimización</h2>
+<p>La plataforma aplica medidas técnicas y organizativas razonables para
+proteger los documentos (confidencialidad, integridad y disponibilidad,
+art. 9º, Ley 25.326), incluida la <strong>minimización de datos</strong>
+(art. 4º, inc. 3): solo se envían al proveedor los datos necesarios para
+la extracción. Se recomienda al usuario: -
+<strong>anonimizar/seudonimizar</strong> identificadores (DNI, CUIT,
+IBAN, teléfonos) cuando la extracción no los requiera; - contratar la
+modalidad <strong>local</strong> para documentos con máxima
+confidencialidad; y - conservar la <strong>revisión humana</strong> del
+resultado antes de su uso comercial o legal.</p>
+<h2 id="derechos-del-titular-de-los-datos-arco">10. Derechos del titular
+de los datos (ARCO)</h2>
+<p>Todo titular puede ejercer los derechos de <strong>Acceso,
+Rectificación, Supresión y Oposición</strong> (arts. 14, 16 y 27, Ley
+25.326) ante: - la plataforma, en la dirección de contacto indicada al
+pie; y/o - el proveedor LLM, conforme a sus propias políticas.</p>
+<p>La plataforma atenderá las solicitudes dentro de los plazos legales y
+dará traslado a los proveedores cuando el dato esté en su poder.</p>
+<h2 id="exactitud-de-los-resultados">11. Exactitud de los
+resultados</h2>
+<p>El resultado de la extracción se genera mediante modelos de IA y, por
+su naturaleza probabilística, <strong>puede contener errores u
+omisiones</strong>. No constituye asesoramiento legal, contable ni
+financiero. El usuario es el único responsable de revisar, validar y
+utilizar el resultado con criterio profesional.</p>
+<h2 id="vigencia-y-cambios">12. Vigencia y cambios</h2>
+<p>Este Aviso entra en vigencia el [FECHA] y se revisará ante cualquier
+cambio en: proveedores LLM utilizados, políticas de retención de
+proveedores, arquitectura del servicio o normativa aplicable. Las
+modificaciones se publicarán con aviso previo en la plataforma.</p>
+<h2 id="contacto-y-responsable">13. Contacto y responsable</h2>
+<ul>
+<li><strong>Responsable del tratamiento:</strong> [NOMBRE / RAZÓN SOCIAL
+— pendiente de definición]</li>
+<li><strong>Domicilio:</strong> [DOMICILIO — pendiente]</li>
+<li><strong>Contacto:</strong> [EMAIL / TEL — pendiente]</li>
+<li><strong>Referencias normativas:</strong> Ley 25.326 y Decreto
+1558/2001 · Disp. AAIP 60-E/2016 · Res. AAIP 159/2018 · Res. AAIP
+198/2023 · Res. AAIP 47/2018 · Ley 26.388 · CCyC art. 1106.</li>
+</ul>
+<hr />
+<h3
+id="bloqueadores-para-cierre-del-documento-dependencia-responsable">Bloqueadores
+para cierre del documento (dependencia · responsable)</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>#</th>
+<th>Pendiente</th>
+<th>Depende de</th>
+<th>Responsable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B1</td>
+<td>Decidir proveedor(es) de modelo final y plan de cuenta</td>
+<td>Decisión de producto/arquitectura</td>
+<td>Producto/Arquitectura</td>
+</tr>
+<tr>
+<td>B2</td>
+<td>Definir nombre/razón social y datos de contacto del responsable</td>
+<td>Definición legal/comercial</td>
+<td>Dirección</td>
+</tr>
+<tr>
+<td>B3</td>
+<td>Aprobación legal de la redacción (este documento v0.1)</td>
+<td>Consulta con Joaquín (ARG-597)</td>
+<td>Joaquín</td>
+</tr>
+<tr>
+<td>B4</td>
+<td>Definir ubicación UIs de los textos (banner, checkbox, toast,
+admin)</td>
+<td>Ticket de UI</td>
+<td>Producto/UX</td>
+</tr>
+<tr>
+<td>B5</td>
+<td>Decidir idioma (es/en) para despliegue internacional</td>
+<td>Estrategia de expansión</td>
+<td>Producto</td>
+</tr>
+</tbody>
+</table>
+<h3 id="referencias-de-precedentes-usados-como-modelo">Referencias de
+precedentes usados como modelo</h3>
+<ul>
+<li>Nino Legal (AR): DPA por proveedor con cláusulas AAIP 198/2023;
+responsabilidad del usuario por datos de terceros.</li>
+<li>ContratoAlquiler.com (ES): página de Transparencia IA; anonimización
+previa (DNI/IBAN/teléfonos); DPA con proveedores; no entrenamiento.</li>
+<li>Docusign AI Attachment: cláusulas de entrenamiento opt-out; revisión
+humana; conspicuidad.</li>
+<li>Thomson Reuters / LexisNexis (GenAI Terms): no entrenamiento con
+user content; verificación de outputs; aceptación de términos de
+terceros.</li>
+<li>Poder Judicial de la Ciudad de Buenos Aires: preferir ejecución
+local; anonimizar antes de enviar.</li>
+</ul>
+</body>
+</html>
