@@ -1,9 +1,5 @@
 # Aviso de Privacidad y Tratamiento por Inteligencia Artificial — Multi OCR Tool
 
-**Versión:** 0.1 (borrador para revisión legal)
-**Fecha:** 14/09/2026
-**Estado:** [ ] Pendiente validación legal (Joaquín — ticket ARG-597) · [ ] Pendiente aprobación de producto
-
 ---
 
 ## 1. Objeto y alcance
