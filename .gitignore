@@ -30,3 +30,6 @@ reports/*.html
 !sample-data/
 !reports/FINAL_REPORT.md
 !reports/README.md
+
+# Word/Office temp lock files
+~$*
