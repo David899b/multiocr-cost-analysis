@@ -24,10 +24,11 @@ Antes de escribirte ya investigamos y documentamos con fuentes: la clasificació
 
 **5 · Estrategia internacional.** Si el producto sale de Argentina: ¿aviso genérico o versiones por jurisdicción? ¿Diseñarlo multi-jurisdicción desde el inicio o adaptar al expandir?
 
-## Decisiones de producto abiertas (condicionan las respuestas)
-- ¿Modelo local por defecto o solo "avanzado"?
-- ¿Usuario con su propia API key (BYOK) eligiendo proveedor? (define quién es responsable frente al titular de los datos)
-- Datos sensibles: ¿bloquear la subida por defecto o solo advertir?
+## Decisiones de producto que condicionan las respuestas (estado actual al 14/09)
+
+- **Datos sensibles (resuelta):** el servicio **solo advierte**; no bloquea la carga por defecto. Nota: el Aviso v0.1 (sección 8) aún menciona que la plataforma "puede bloquear o advertir"; ese texto se alineará con esta decisión.
+- **API keys / BYOK (en definición):** orientación a que **roles administrador** configuren las API keys de cada organización (la organización contrataría al proveedor según sus términos; la plataforma actuaría como capa de enrutado). No está 100% cerrado.
+- **Modelo local (abierta):** ¿local por defecto o solo "avanzado"? Sin respuesta por el momento.
 
 ## Qué esperamos de vos
 - Respuesta a las **P1–P5** con norma citada.

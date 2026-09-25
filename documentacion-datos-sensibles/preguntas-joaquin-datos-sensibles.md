@@ -25,13 +25,13 @@ Si el producto se lanza en otros países, ¿conviene un aviso genérico único o
 
 ---
 
-## Decisiones de producto que condicionan la respuesta legal (abiertas)
+## Decisiones de producto que condicionan la respuesta legal (estado actual al 14/09)
 
-- ¿El modelo local se ofrece **por defecto** o solo como opción "avanzada"?
-- ¿El usuario puede configurar **su propia API key** (BYOK) y elegir proveedor? (Define quién es responsable frente al titular de los datos.)
-- Para documentos con datos sensibles: ¿la plataforma debe **bloquear** la subida por defecto o solo **advertir**?
+- **Datos sensibles (resuelta):** el servicio **solo advierte**; no bloquea la carga por defecto. (Alineo pendiente: el Aviso v0.1, sección 8, aún dice "puede bloquear o advertir".)
+- **API keys / BYOK (en definición):** orientación a que **roles administrador** configuren las API keys por organización; la organización contrataría al proveedor (sus términos), la plataforma actuaría como capa de enrutado. A confirmar.
+- **Modelo local (abierta):** ¿por defecto o solo como opción "avanzada"? Sin respuesta aún.
 
-> Estas tres decisiones son de producto, pero definen qué respuestas legales se aplican. Se listan aquí para que Joaquín las tenga presentes al responder.
+> Estas decisiones son de producto, pero definen qué respuestas legales se aplican (en particular la de API keys: quién es responsable frente al titular de los datos).
 
 ---
 
